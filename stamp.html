@@ -16,9 +16,6 @@
 		#available-icons .selected {
 			border:5px solid blue;
 		}
-		#main-canvas {
-			border:1px solid silver;
-		}
 	</style>
   </head>
   <body>
@@ -77,8 +74,8 @@
 			});
 			
 			var width = $(document).width();
-			var height = $(document).height() - 200;
-			$('#canvas-container').append('<canvas id="main-canvas" style="width:'+width+';height:'+height+'"></canvas>');
+			var height = $(document).height() - 104;
+			$('#canvas-container').append('<canvas id="main-canvas" style="width:'+width+'px;height:'+height+'px"></canvas>');
 			
 			// get a reference to the canvas
 			var canvas = document.getElementById('main-canvas');
