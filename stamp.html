@@ -44,7 +44,6 @@
 				this.images = {};
 				this.categories = data.categories;
 				this.images = data.images
-				this.setCategory(data.categories[0].name);
 				
 				// Sets the category, will update the available images
 				this.setCategory = function(category){
@@ -54,6 +53,8 @@
 						$('#available-icons').append('<span><img src="'+img.src+'" alt="'+ + '" /></span>');
 					}
 				};
+
+				this.setCategory(data.categories[0].name);
 			}
 
 			//Load the image JSON Data
