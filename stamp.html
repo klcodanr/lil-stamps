@@ -16,7 +16,7 @@
 		#available-icons .selected {
 			border:5px solid blue;
 		}
-		#canvas {
+		#main-canvas {
 			border:1px solid silver;
 		}
 	</style>
@@ -53,8 +53,13 @@
 						var img = data.images[category][i];
 						$('#available-icons').append('<span><img src="'+img.src+'" alt="' + img.title + '" /></span>');
 					}
+					$('#available-icons span').click(function(){
+						$('#available-icons span').removeClass('selected');
+						$(this).addClass('selected');
+					});
 				};
 
+				// load the default category
 				this.setCategory(data.categories[0].name);
 			}
 
@@ -64,11 +69,12 @@
 				imageManager = new ImageManager(data);
 			});
 			
+			// get a reference to the canvas
 			var canvas = document.getElementById('main-canvas');
 			var context = canvas.getContext('2d');
 			
 			//handle clicks
-			$(document).click(function(event){
+			$(canvas).click(function(event){
 				try{
 					var imgObj = $('#available-icons .selected img')[0];
 					context.drawImage(imgObj, event.pageX - 50, event.pageY - 50);
