@@ -51,7 +51,7 @@
 					$('#available-icons').html('');
 					for(var i=0;i < data.images[category].length; i++){
 						var img = data.images[category][i];
-						$('#available-icons').append('<span><img src="'+img.src+'" alt="'+ + '" /></span>');
+						$('#available-icons').append('<span><img src="'+img.src+'" alt="' + img.title + '" /></span>');
 					}
 				};
 
