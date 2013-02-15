@@ -29,24 +29,27 @@
 	<script src="http://www.html5canvastutorials.com/libraries/kinetic-v4.3.0-beta2.js"></script>
 	<script>
 		(function($) {
-			// handle image selection
-			$('#available-icons span').click(function(){
-				$('#available-icons span').removeClass('selected');
-				$(this).addClass('selected');
-			});
-
-			//create the stage
-			var stage = new Kinetic.Stage({
-				container: 'container',
-				width: $(document).width(),
-				height: $(document).height() - 100
-			});
 			
 			$.getJSON('stamps.json', function(data){
 				var defaultCategory = data.categories[0];
 				for(var i=0;i < data.images[defaultCategory].length; i++){
 					$('#available-icons').append('<span><img src="'+data.images[defaultCategory][i].src+'" /></span>');
 				}
+
+				// handle image selection
+				$('#available-icons span').click(function(){
+					$('#available-icons span').removeClass('selected');
+					$(this).addClass('selected');
+				});
+			});
+			
+			
+
+			//create the stage
+			var stage = new Kinetic.Stage({
+				container: 'container',
+				width: $(document).width(),
+				height: $(document).height() - 100
 			});
 			
 			$(document).click(function(event){

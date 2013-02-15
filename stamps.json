@@ -1,33 +1,33 @@
 {
-	categories: [
+	"categories": [
 		{
-			title: 'Tux',
-			name: 'tux'
+			"title": "Tux",
+			"name": "tux"
 		},
 		{
-			title: 'Animals',
-			name: 'animals'
+			"title": "Animals",
+			"name": "animals"
 		}
 	],
-	images: {
-		tux: [
+	"images": {
+		"tux": [
 			{
-				title : "Wild penguin",
-				creator : "Moini / OCAL graphics",
-				tags : "wild, native, penguin, stone age, Tarzan, Neanderthal, warrior, leopard, leopard skin, spear, lance, shaft, Tux, animal, bird",
-				src: 'icons/tux/Wild_penguin.png'
+				"title" : "Wild penguin",
+				"creator" : "Moini / OCAL graphics",
+				"tags" : "wild, native, penguin, stone age, Tarzan, Neanderthal, warrior, leopard, leopard skin, spear, lance, shaft, Tux, animal, bird",
+				"src": "icons/tux/Wild_penguin.png"
 			},
 			{
-				title : "Doctor P.",
-				creator : "Moini / OCAL graphics",
-				tags : "doctor, surgeon, penguin, bird, animal, Tux, surgery, medicine, operation, hospital, scalpel, face mask, mask, bonnet, lab coat",
-				src: 'icons/tux/surgeon_penguin.png'
+				"title" : "Doctor P.",
+				"creator" : "Moini / OCAL graphics",
+				"tags" : "doctor, surgeon, penguin, bird, animal, Tux, surgery, medicine, operation, hospital, scalpel, face mask, mask, bonnet, lab coat",
+				"src": "icons/tux/surgeon_penguin.png"
 			},
 			{
-				title : "Pirate of Antarctica",
-				creator : "Moini / OCAL graphics",
-				tags : "pirate , penguin , bandana , parrot , sabre , Tux , bird , animal , ship , piracy , macaw , pet , weapon , harrr",
-				src: 'icons/tux/pirate_penguin.png'
+				"title" : "Pirate of Antarctica",
+				"creator" : "Moini / OCAL graphics",
+				"tags" : "pirate , penguin , bandana , parrot , sabre , Tux , bird , animal , ship , piracy , macaw , pet , weapon , harrr",
+				"src": "icons/tux/pirate_penguin.png"
 			}
 		]
 	}
