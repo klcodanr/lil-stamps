@@ -31,7 +31,7 @@
 		(function($) {
 			
 			$.getJSON('stamps.json', function(data){
-				var defaultCategory = data.categories[0];
+				var defaultCategory = data.categories[0].name;
 				for(var i=0;i < data.images[defaultCategory].length; i++){
 					$('#available-icons').append('<span><img src="'+data.images[defaultCategory][i].src+'" /></span>');
 				}
