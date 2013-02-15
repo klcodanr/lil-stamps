@@ -64,9 +64,16 @@
 			}
 
 			//Load the image JSON Data
-			$.getJSON('stamps.json', function(data){
-				console.log("Loading the available stamps");
-				imageManager = new ImageManager(data);
+			$.ajax({
+				url: 'stamps.json',
+				dataType: 'json',
+				success: function(data){
+					console.log("Loading the available stamps");
+					imageManager = new ImageManager(data);
+				},
+				error: function(){
+					console.log("Unable to load available stamps");
+				}
 			});
 			
 			var width = $(document).width();
