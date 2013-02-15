@@ -16,60 +16,60 @@
 		#available-icons .selected {
 			border:5px solid blue;
 		}
-		canvas{
+		#canvas {
 			border:1px solid silver;
 		}
 	</style>
   </head>
   <body>
-	<div id="container"></div>
+	<canvas id="main-canvas">
+	</canvas>
 	<div id="available-icons">
 	</div>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="http://www.html5canvastutorials.com/libraries/kinetic-v4.3.0-beta2.js"></script>
 	<script>
 		(function($) {
+			// set up the console logger
+			if(!console){
+				window.console = {};
+			}
+			if(!console.log){
+				window.console.log = function(){};
+			}
 			
-			var images = {};
-			$.getJSON('stamps.json', function(data){
-				var defaultCategory = data.categories[0].name;
-				for(var i=0;i < data.images[defaultCategory].length; i++){
-					var img = data.images[defaultCategory][i];
-					$('#available-icons').append('<span><img src="'+img.src+'" alt="'+img.title +' by ' + img.creator + '" /></span>');
-					var imageObj = new Image();
-					imageObj.src = img.src;
-					images[img.src] = imageObj;
-				}
+			// Manage the available images
+			var imageManager = null;
+			function ImageManager(data) {
+				console.log("Loading image manager");
+				this.images = {};
+				this.categories = data.categories;
+				this.images = data.images
+				this.setCategory(data.categories[0].name);
+				
+				// Sets the category, will update the available images
+				this.setCategory = function(category){
+					console.log("Setting category to: " + category);
+					$('#available-icons').html('');
+					for(var i=0;i < data.images[category].length; i++){
+						$('#available-icons').append('<span><img src="'+img.src+'" alt="'+ + '" /></span>');
+					}
+				};
+			}
 
-				// handle image selection
-				$('#available-icons span').click(function(){
-					$('#available-icons span').removeClass('selected');
-					$(this).addClass('selected');
-				});
-			});
-		
-			//create the stage
-			var stage = new Kinetic.Stage({
-				container: 'container',
-				width: $(document).width(),
-				height: $(document).height() - 100
+			//Load the image JSON Data
+			$.getJSON('stamps.json', function(data){
+				console.log("Loading the available stamps");
+				imageManager = new ImageManager(data);
 			});
 			
+			var canvas = document.getElementById('main-canvas');
+			var context = canvas.getContext('2d');
 			
 			//handle clicks
 			$(document).click(function(event){
 				try{
-					var layer = new Kinetic.Layer();
-					var imgId = $('#available-icons .selected img').attr('src');
-					var img = new Kinetic.Image({
-						x: event.pageX - 50,
-						y: event.pageY - 50,
-						image: images[imgId],
-						width: 100,
-						height: 100
-					});
-					layer.add(img);
-					stage.add(layer);
+					var imgObj = $('#available-icons .selected img')[0];
+					context.drawImage(imgObj, event.pageX - 50, event.pageY - 50);
 				}catch(e){
 					console.log('Exception loading image: '+e.message);
 				}
