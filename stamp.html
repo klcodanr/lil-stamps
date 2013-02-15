@@ -55,13 +55,11 @@
 				height: $(document).height() - 100
 			});
 			
-			//create the layer
-			var layer = new Kinetic.Layer();
-			stage.add(layer);
 			
 			//handle clicks
 			$(document).click(function(event){
 				try{
+					var layer = new Kinetic.Layer();
 					var imgId = $('#available-icons .selected img').attr('src');
 					var img = new Kinetic.Image({
 						x: event.pageX - 50,
@@ -71,6 +69,7 @@
 						height: 100
 					});
 					layer.add(img);
+					stage.add(layer);
 				}catch(e){
 					console.log('Exception loading image: '+e.message);
 				}
