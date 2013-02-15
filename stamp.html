@@ -22,8 +22,8 @@
 	</style>
   </head>
   <body>
-	<canvas id="main-canvas">
-	</canvas>
+  	<div id="canvas-container">
+  	</div>
 	<div id="available-icons">
 	</div>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -68,6 +68,10 @@
 				console.log("Loading the available stamps");
 				imageManager = new ImageManager(data);
 			});
+			
+			var width = $(document).width();
+			var height = $(document).height() - 200;
+			$('#canvas-container').append('<canvas id="main-canvas" style="width:'+width+';height:'+height+'"></canvas>');
 			
 			// get a reference to the canvas
 			var canvas = document.getElementById('main-canvas');
