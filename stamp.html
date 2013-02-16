@@ -1,34 +1,52 @@
 <!DOCTYPE HTML>
 <html>
   <head>
+  	<meta charset="utf-8">
 	<title>Baby Stamps</title>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />
+	<link href="css/smoothness/jquery-ui-1.10.1.custom.css" rel="stylesheet" />
 	<style>
 		body {
 			margin: 0px;
 			padding: 0px;
-		}S
+		}
 		#available-icons {
-		    height: 125px;
+		    height: 109px;
 		    overflow: hidden;
+		    bottom: 0px;
+		    left: 0px;
+		    position:absolute;
+		    background-color: silver;
+		    border-top-left-radius: 10px;
+		    border-top-right-radius: 10px;
 		}
 		#available-icons span {
 			width:100px;
 			height: 100px;
-			border:5px solid white;
+			border:5px solid silver;
 			display:inline-block;
 			overflow:hidden;
 		}
 		#available-icons .selected {
-			border:5px solid blue;
+			border:5px solid gray;
+			border-radius: 5px;
+		}
+		#clear-canvas {
+			float:right;
 		}
 	</style>
   </head>
   <body>
-  	<div id="canvas-container">
-  	</div>
 	<div id="available-icons">
 	</div>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  	<div id="canvas-container">
+  	</div>
+  	<div id="dialog-confirm" title="Clear Drawing" style="display:none">
+		<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Are you sure?</p>
+	</div>
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script src="js/jquery-ui-1.10.1.custom.js"></script>
+	<script src="js/jquery.touchwipe.min.js"></script>
 	<script>
 		(function($) {
 			// set up the console logger
@@ -53,11 +71,33 @@
 					$('#available-icons').html('');
 					for(var i=0;i < data.images[category].length; i++){
 						var img = data.images[category][i];
-						$('#available-icons').append('<span><img src="'+img.src+'" alt="' + img.title + '" /></span>');
+						$('#available-icons').append('<span class="icon"><img src="'+img.src+'" alt="' + img.title + '" /></span>');
 					}
-					$('#available-icons span').click(function(){
+					$('#available-icons .icon').click(function(){
 						$('#available-icons span').removeClass('selected');
 						$(this).addClass('selected');
+						return false;
+					});
+					$('#available-icons').append('<span id="clear-canvas"><img src="icons/app/Trash_Can.png" /></span>');
+					$('#available-icons #clear-canvas').click(function(){
+						$("#dialog-confirm").dialog({
+							resizable: false,
+							height:140,
+							modal: true,
+							buttons: {
+								"Delete all items": function() {
+									$(this).dialog("close");
+									context.clearRect(0, 0, canvas.width, canvas.height);
+								},
+							 	Cancel: function() {
+									$(this).dialog("close");
+								}
+							}
+						});
+						$('.ui-widget-overlay').click(function(){
+							$("#dialog-confirm").dialog("close");
+						});
+						return false;
 					});
 				};
 
@@ -79,12 +119,29 @@
 			});
 			
 			var width = $(document).width();
-			var height = $(document).height() - 130;
+			var height = $(document).height() - 10;
+			$('#available-icons').width(width);
 			$('#canvas-container').append('<canvas id="main-canvas" width="' + width + '" height="' + height + '"></canvas>');
 			
 			// get a reference to the canvas
 			var canvas = document.getElementById('main-canvas');
 			var context = canvas.getContext('2d');
+			
+			$(canvas).touchwipe({
+			     wipeUp: function() {
+			    	 $('#available-icons').show("slide", {
+			    		 direction: bottom
+			    	 }, 1000);
+			     },
+			     wipeDown: function() {
+			    	 $('#available-icons').hide("slide", {
+			    		 direction: bottom
+			    	 }, 1000);
+			     },
+			     min_move_x: 20,
+			     min_move_y: 20,
+			     preventDefaultEvents: true
+			});
 			
 			//handle clicks
 			$(canvas).click(function(event){
@@ -94,6 +151,7 @@
 				}catch(e){
 					console.log('Exception loading image: '+e.message);
 				}
+				return false;
 			});
 		})(jQuery);
 		
