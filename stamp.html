@@ -46,7 +46,7 @@
 	</div>
 	<script src="js/jquery-1.9.1.min.js"></script>
 	<script src="js/jquery-ui-1.10.1.custom.js"></script>
-	<script src="js/jquery.touchwipe.min.js"></script>
+	<script src="js/jquery.swipe-1.0.2.js"></script>
 	<script>
 		(function($) {
 			// set up the console logger
@@ -127,20 +127,11 @@
 			var canvas = document.getElementById('main-canvas');
 			var context = canvas.getContext('2d');
 			
-			$(canvas).touchwipe({
-			     wipeUp: function() {
-			    	 $('#available-icons').show("slide", {
-			    		 direction: bottom
-			    	 }, 1000);
-			     },
-			     wipeDown: function() {
-			    	 $('#available-icons').hide("slide", {
-			    		 direction: bottom
-			    	 }, 1000);
-			     },
-			     min_move_x: 20,
-			     min_move_y: 20,
-			     preventDefaultEvents: true
+
+			$(canvas).swipe({
+				swiped: function (e, ui) {
+					$("#textDirection").html(ui.swipeDirection);
+				}
 			});
 			
 			//handle clicks
