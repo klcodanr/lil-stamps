@@ -41,8 +41,14 @@
 	</div>
   	<div id="canvas-container">
   	</div>
-  	<div id="dialog-confirm" title="Clear Drawing" style="display:none">
-		<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Are you sure?</p>
+  	<div id="dialog-confirm" title="Clear Drawing?" style="display:none">
+	</div>
+  	<div id="dialog-loading" title="Loading..." style="display:none">
+  		<div id="loading-progress"></div>
+  		<div id="loading-message"></div>
+	</div>
+  	<div id="dialog-error" title="Error" style="display:none">
+  		<div id="error-message"></div>
 	</div>
 	<script src="js/jquery-1.9.1.min.js"></script>
 	<script src="js/jquery-ui-1.10.1.custom.js"></script>
@@ -85,7 +91,7 @@
 							height:140,
 							modal: true,
 							buttons: {
-								"Delete all items": function() {
+								"Clear": function() {
 									$(this).dialog("close");
 									context.clearRect(0, 0, canvas.width, canvas.height);
 								},
@@ -104,19 +110,6 @@
 				// load the default category
 				this.setCategory(data.categories[0].name);
 			}
-
-			//Load the image JSON Data
-			$.ajax({
-				url: 'stamps.json',
-				dataType: 'json',
-				success: function(data){
-					console.log("Loading the available stamps");
-					imageManager = new ImageManager(data);
-				},
-				error: function(){
-					console.log("Unable to load available stamps");
-				}
-			});
 			
 			var width = $(document).width();
 			var height = $(document).height() - 10;
@@ -143,6 +136,37 @@
 					console.log('Exception loading image: '+e.message);
 				}
 				return false;
+			});
+			
+			// set the progress to show indeterminate
+			$("#loading-progress").progressbar({
+				value: false
+			});
+			
+			// show a loading dialog
+			$("#dialog-loading").dialog({
+				resizable: false,
+				modal: true
+			});
+			$('#loading-message').html("Loading available stamps...");
+			//Load the image JSON Data
+			$.ajax({
+				url: 'stamps.json',
+				dataType: 'json',
+				success: function(data){
+					$("#dialog-loading").dialog("close");
+					console.log("Loading the available stamps");
+					imageManager = new ImageManager(data);
+				},
+				error: function(){
+					$("#dialog-loading").dialog("close");
+					console.log("Unable to load available stamps");
+					$('#error-message').html("Unable to load available stamps");
+					$("#dialog-error").dialog({
+						resizable: false,
+						modal: true
+					});
+				}
 			});
 		})(jQuery);
 		
