@@ -15,19 +15,22 @@
 				"title" : "Wild penguin",
 				"creator" : "Moini / OCAL graphics",
 				"tags" : "wild, native, penguin, stone age, Tarzan, Neanderthal, warrior, leopard, leopard skin, spear, lance, shaft, Tux, animal, bird",
-				"src": "icons/tux/Wild_penguin.png"
+				"src": "icons/tux/Wild_penguin.png",
+				"source": "http://openclipart.org/detail/174879/wild-penguin-by-moini-174879"
 			},
 			{
 				"title" : "Doctor P.",
 				"creator" : "Moini / OCAL graphics",
 				"tags" : "doctor, surgeon, penguin, bird, animal, Tux, surgery, medicine, operation, hospital, scalpel, face mask, mask, bonnet, lab coat",
-				"src": "icons/tux/surgeon_penguin.png"
+				"src": "icons/tux/surgeon_penguin.png",
+				"source": "http://openclipart.org/detail/174719/doctor-p.-by-moini-174719"
 			},
 			{
 				"title" : "Pirate of Antarctica",
 				"creator" : "Moini / OCAL graphics",
 				"tags" : "pirate , penguin , bandana , parrot , sabre , Tux , bird , animal , ship , piracy , macaw , pet , weapon , harrr",
-				"src": "icons/tux/pirate_penguin.png"
+				"src": "icons/tux/pirate_penguin.png",
+				"source": "http://openclipart.org/detail/174756/pirate-of-antartica-by-moini-174756"
 			}
 		]
 	}
