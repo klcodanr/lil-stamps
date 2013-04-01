@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+  	<meta charset="utf-8">
+	<title>Baby Stamps</title>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />
+	<link href="css/smoothness/jquery-ui-1.10.1.custom.css" rel="stylesheet" />
+	<style>
+		body {
+			margin: 0px;
+			padding: 0px;
+		}
+		#available-icons {
+		    height: 109px;
+		    overflow: hidden;
+		    bottom: 0px;
+		    left: 0px;
+		    position:absolute;
+		    background-color: silver;
+		    border-top-left-radius: 10px;
+		    border-top-right-radius: 10px;
+		}
+		#available-icons span {
+			width:100px;
+			height: 100px;
+			border:5px solid silver;
+			display:inline-block;
+			overflow:hidden;
+		}
+		#available-icons .selected {
+			border:5px solid gray;
+			border-radius: 5px;
+		}
+		#clear-canvas {
+			float:right;
+		}
+	</style>
+  </head>
+  <body>
+	<div id="available-icons">
+	</div>
+  	<div id="canvas-container">
+  	</div>
+  	<div id="dialog-confirm" title="Clear Drawing?" style="display:none">
+	</div>
+  	<div id="dialog-loading" title="Loading..." style="display:none">
+  		<div id="loading-progress"></div>
+  		<div id="loading-message"></div>
+	</div>
+  	<div id="dialog-error" title="Error" style="display:none">
+  		<div id="error-message"></div>
+	</div>
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script src="js/jquery-ui-1.10.1.custom.js"></script>
+	<script src="js/jquery.swipe-1.0.2.js"></script>
+	<script>
+		(function($) {
+			// set up the console logger
+			if(!console){
+				window.console = {};
+			}
+			if(!console.log){
+				window.console.log = function(){};
+			}
+			
+			// Manage the available images
+			var imageManager = null;
+			function ImageManager(data) {
+				console.log("Loading image manager");
+				this.images = {};
+				this.categories = data.categories;
+				this.images = data.images
+				
+				// Sets the category, will update the available images
+				this.setCategory = function(category){
+					console.log("Setting category to: " + category);
+					$('#available-icons').html('');
+					for(var i=0;i < data.images[category].length; i++){
+						var img = data.images[category][i];
+						$('#available-icons').append('<span class="icon"><img src="'+img.src+'" alt="' + img.title + '" /></span>');
+					}
+					$('#available-icons .icon').click(function(){
+						$('#available-icons span').removeClass('selected');
+						$(this).addClass('selected');
+						return false;
+					});
+					$('#available-icons').append('<span id="clear-canvas"><img src="icons/app/Trash_Can.png" /></span>');
+					$('#available-icons #clear-canvas').click(function(){
+						$("#dialog-confirm").dialog({
+							resizable: false,
+							height:140,
+							modal: true,
+							buttons: {
+								"Clear": function() {
+									$(this).dialog("close");
+									context.clearRect(0, 0, canvas.width, canvas.height);
+								},
+							 	Cancel: function() {
+									$(this).dialog("close");
+								}
+							}
+						});
+						$('.ui-widget-overlay').click(function(){
+							$("#dialog-confirm").dialog("close");
+						});
+						return false;
+					});
+				};
+
+				// load the default category
+				this.setCategory(data.categories[0].name);
+			}
+			
+			var width = $(document).width();
+			var height = $(document).height() - 10;
+			$('#available-icons').width(width);
+			$('#canvas-container').append('<canvas id="main-canvas" width="' + width + '" height="' + height + '"></canvas>');
+			
+			// get a reference to the canvas
+			var canvas = document.getElementById('main-canvas');
+			var context = canvas.getContext('2d');
+			
+
+			$(canvas).swipe({
+				swiped: function (e, ui) {
+					$("#textDirection").html(ui.swipeDirection);
+				}
+			});
+			
+			//handle clicks
+			$(canvas).click(function(event){
+				try{
+					var imgObj = $('#available-icons .selected img')[0];
+					context.drawImage(imgObj, event.pageX - 50, event.pageY - 50);
+				}catch(e){
+					console.log('Exception loading image: '+e.message);
+				}
+				return false;
+			});
+			
+			// set the progress to show indeterminate
+			$("#loading-progress").progressbar({
+				value: false
+			});
+			
+			// show a loading dialog
+			$("#dialog-loading").dialog({
+				resizable: false,
+				modal: true
+			});
+			$('#loading-message').html("Loading available stamps...");
+			//Load the image JSON Data
+			$.ajax({
+				url: 'stamps.json',
+				dataType: 'json',
+				success: function(data){
+					$("#dialog-loading").dialog("close");
+					console.log("Loading the available stamps");
+					imageManager = new ImageManager(data);
+				},
+				error: function(){
+					$("#dialog-loading").dialog("close");
+					console.log("Unable to load available stamps");
+					$('#error-message').html("Unable to load available stamps");
+					$("#dialog-error").dialog({
+						resizable: false,
+						modal: true
+					});
+				}
+			});
+		})(jQuery);
+		
+	</script>
+	
+  </body>
+</html>
